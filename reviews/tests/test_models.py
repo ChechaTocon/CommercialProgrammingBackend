@@ -30,8 +30,16 @@ class ModelTest(TestCase):
         movie=Movie.objects.get(id=1)
         max_length = Movie._meta.get_field('description').max_length
         self.assertEquals(max_length,255)   
+    
+    def test_movieName_label(self):
+        data = Movie.objects.get(id=1)
+        field_label = data._meta.get_field('movieName').verbose_name        
+        self.assertEquals(field_label,'movieName')
 
-   
+    def test_description_label(self):
+        data = Movie.objects.get(id=1)
+        field_label = data._meta.get_field('description').verbose_name        
+        self.assertEquals(field_label,'description')
     
 
 
