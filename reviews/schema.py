@@ -148,7 +148,7 @@ class ReviewInput(graphene.InputObjectType):
     id = graphene.ID()
     comment = graphene.String()
     ranking = graphene.Int()
-    movie = graphene.Int()
+    movie = graphene.String()
     user = graphene.Int()
 
 class CreateReview(graphene.Mutation):
