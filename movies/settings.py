@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'ajmc3%2x4bk1&f^5vre25_(8wyl2&*wl%jaj&o$*$ve@zoh%rx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',    
     'graphql_jwt.middleware.JSONWebTokenMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
 
@@ -139,3 +140,5 @@ STATIC_URL = '/static/'
 GRAPHENE = {
     'SCHEMA': 'movies.schema.schema',    
 }
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
