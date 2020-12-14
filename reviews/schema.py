@@ -103,6 +103,7 @@ class MovieType(DjangoObjectType):
 
 
 class MovieNode(DjangoObjectType):
+    pk = graphene.Field(type=graphene.Int, source='id')
     class Meta:
         model = Movie
         # Permite un filtrado mas avanzado
@@ -258,9 +259,12 @@ class FindReview(graphene.Mutation):
 
 
 class Query(graphene.ObjectType):
+
     category = graphene.Field(CategoryType, id=graphene.Int())
     categories = graphene.List(CategoryType)
+
     movie = relay.Node.Field(MovieNode)
+   
     all_movies = DjangoFilterConnectionField(MovieNode)
 
     users = graphene.List(UserType)
@@ -269,6 +273,7 @@ class Query(graphene.ObjectType):
     review = graphene.Field(
         ReviewType, id=graphene.Int(), movie_id=graphene.Int())
     reviews = graphene.List(ReviewType)
+    
 
     def resolve_users(self, info):
         return get_user_model().objects.all()
@@ -299,7 +304,15 @@ class Query(graphene.ObjectType):
         if id is not None:
             return Review.objects.get(pk=id)
 
+
         return None
+
+    
+    def resolve_movie(self,info, **kwargs):
+        id = kwargs.get('id')
+        
+        if id is not None:
+            return Movie.objects.get(pk=id)
 
     def resolve_reviews(self, info, **kwargs):
         return Review.objects.all()
