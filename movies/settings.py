@@ -140,5 +140,3 @@ STATIC_URL = '/static/'
 GRAPHENE = {
     'SCHEMA': 'movies.schema.schema',    
 }
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
