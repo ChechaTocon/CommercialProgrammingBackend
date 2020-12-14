@@ -182,7 +182,7 @@ class ReviewInput(graphene.InputObjectType):
     id = graphene.ID()
     comment = graphene.String()
     ranking = graphene.Int()
-    movie = graphene.String()
+    movie = graphene.Int()
     user = graphene.Int()
 
 
@@ -197,7 +197,7 @@ class CreateReview(graphene.Mutation):
     def mutate(root, info, input=None):
         ok = True
         user_obj = User.objects.get(id=input.user)
-        movie_obj = Movie.objects.get(id=input.user)
+        movie_obj = Movie.objects.get(id=input.movie)
         review_instance = Review(
             comment=input.comment,
             ranking=input.ranking,
@@ -208,6 +208,24 @@ class CreateReview(graphene.Mutation):
         )
         review_instance.save()
         return CreateReview(ok=ok, review=review_instance)
+
+class DeleteReview(graphene.Mutation):    
+    class Arguments:
+        id = graphene.Int(required=True)
+    
+    ok = graphene.Boolean()
+    review = graphene.Field(ReviewType)
+
+    @staticmethod
+    def mutate(root, info, id):
+        ok = False
+        review_instance = Review.objects.get(pk=id)
+        if review_instance:
+            ok=True
+            review_instance.delete()
+            return DeleteReview(ok=ok, review=review_instance)
+
+        return DeleteReview(ok=ok, review=None) 
 
 
 class UpdateReview(graphene.Mutation):
@@ -225,7 +243,7 @@ class UpdateReview(graphene.Mutation):
         if review_instance:
             ok = True
             user_obj = User.objects.get(id=input.user)
-            movie_obj = Movie.objects.get(id=input.user)
+            movie_obj = Movie.objects.get(id=input.movie)
 
             review_instance.comment = input.comment
             review_instance.ranking = input.ranking
@@ -240,15 +258,15 @@ class UpdateReview(graphene.Mutation):
 
 class FindReview(graphene.Mutation):
     class Arguments:
-        movie_id = graphene.Int(required=True)
+        id = graphene.Int(required=True)
 
     ok = graphene.Boolean()
     review = graphene.Field(ReviewType)
 
     @staticmethod
-    def mutate(root, info, movie_id):
+    def mutate(root, info, id):
         ok = False
-        review_instance = Review.objects.get(movie=movie_id)
+        review_instance = Review.objects.get(movie=id)
         if review_instance:
             ok = True
 
@@ -270,8 +288,7 @@ class Query(graphene.ObjectType):
     users = graphene.List(UserType)
     me = graphene.Field(UserType)
 
-    review = graphene.Field(
-        ReviewType, id=graphene.Int(), movie_id=graphene.Int())
+    review = graphene.Field(ReviewType, id=graphene.Int())
     reviews = graphene.List(ReviewType)
     
 
@@ -328,4 +345,5 @@ class Mutation(graphene.ObjectType):
     update_review = UpdateReview.Field()
     find_review = FindReview.Field()
     update_category = UpdateCategory.Field()
+    delete_review = DeleteReview.Field()
 # fin de mutations
