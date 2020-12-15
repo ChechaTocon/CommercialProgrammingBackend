@@ -23,7 +23,7 @@ class ModelTest(TestCase):
          #test para pelicula
     def test_movieName_max_length(self):
         movie=Movie.objects.get(id=1)
-        max_length = Movie._meta.get_field('movieName').max_length
+        max_length = Movie._meta.get_field('movieNames').max_length
         self.assertEquals(max_length,25)
 
     def test_description_max_length(self):
