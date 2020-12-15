@@ -44,3 +44,4 @@ jobs:
       run: |
         python manage.py test reviews.tests.test_models.ModelTest
         python manage.py test reviews.tests.test_model_review.ReviewModelTest
+        python manage.py test reviews.tests.test_model_category.CategoryModelTest

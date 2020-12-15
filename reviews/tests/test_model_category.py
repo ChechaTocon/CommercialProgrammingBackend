@@ -3,7 +3,7 @@ from django.test import TestCase
 from reviews.models import Review, Movie, Category
 
 
-class ReviewModelTest(TestCase):
+class CategoryModelTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
