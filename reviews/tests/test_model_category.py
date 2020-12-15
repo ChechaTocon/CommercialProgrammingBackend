@@ -12,7 +12,7 @@ class CategoryModelTest(TestCase):
 
     def test_nameCategory_label(self):
         data = Category.objects.get(id=1)
-        field_label = data._meta.get_field('name').verbose_name
+        field_label = data._meta.get_field('names').verbose_name
         self.assertEquals(field_label, 'name')
 
     def test_nameCategory_value(self):
